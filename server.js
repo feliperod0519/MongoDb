@@ -10,21 +10,36 @@ var exphbs = require('express-handlebars'),
     moment = require('moment'),
     multer = require('multer');
 var mongoose = require('mongoose');
+var image = require('./controller/image');
+
 var router = express.Router();
-router.get('/', function (req, res)
-{
-    res.render('index.handlebars');
-});
+//router.get('/', function (req, res)
+//{
+    //res.render('index.handlebars');
+//});
 router.param('image_id', function (req, res, next, image_id)
 {
     console.log('image_id:' + image_id);
     req.image_id = image_id;
     next();
 });
-router.get('/images/:image_id', function (req, res)
+router.get('/', image.getAll);
+router.get('/images/:image_id', image.getByFirst);
+router.post('/images', function (req, res)
 {
+    res.redirect('/images/');
+});
+router.post('/images/:image_id/like', function (req, res)
+{
+    console.log('Like ' + req.image_id);
+});
+router.post('/images/:image_id/comment', function (req, res) {
+    console.log('Like ' + req.image_id);
+});
+router.delete('/images/:image_id', function (req, res) {
     res.redirect('/');
 });
+
 app = express();
 app.use(router);
 app.set('port', process.env.PORT || 3300);
